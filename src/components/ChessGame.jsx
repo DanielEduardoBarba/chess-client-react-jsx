@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react"
-import { MAIN_URL } from "../key.js"
+import { MAIN_URL } from "../keys.js"
 import "./ChessGame.css"
 import thump from "../assets/thump.wav"
 import slideRock from "../assets/slidingRock.wav"
@@ -30,10 +30,10 @@ const BOARD = [
 ]
 
 
-export default function ChessGame() {
+export default function ChessGame({viewOnly}) {
     //const {gameID} = gameInfo
 
-    const { loggedName, setLoggedName, server, setServer, setPage, selectedGame, setSelectedGame } = useContext(ServerContext)
+    const { loggedName, setLoggedName, server, setServer,page, setPage, selectedGame, setSelectedGame } = useContext(ServerContext)
 
     const [clickOne, setClickOne] = useState("")
     const [clickTwo, setClickTwo] = useState("")
@@ -65,16 +65,16 @@ export default function ChessGame() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ "from": clickOne, "to": clickTwo })
-            })
+                })
                 .then(incoming => incoming.json())
                 .then(data => {
                     const { message } = data
-                    //console.log(data)
                     setServer(data.message)
-
+                    
                     //setMoves(moves + 1)
                     //setServer(server)
-
+                    
+                    console.log(data)
                     setWhitePos([...data.whitePos])
                     setBlackPos([...data.blackPos])
                     setChat([...data.messages])
@@ -156,7 +156,8 @@ export default function ChessGame() {
     }, [cycle])//perpetual and intentionally loops
 
     useEffect(()=>{
-       estabilishPlayer()
+        console.log("VIEWONLY", viewOnly)
+       if(!viewOnly) estabilishPlayer()
     },[])
 
 
@@ -189,24 +190,32 @@ export default function ChessGame() {
             setBlackPos([...data.blackPos])
             setWhitePos([...data.whitePos])
             setChat([...data.messages])
-            setServer("Opponent moved!")
+            setServer(`Joining ${loggedName}...`)
 
-            let readyPlayer={}
-            if(!data.player1){
-                setPlayerNum(1)
-                readyPlayer = {player1: loggedName}
+            const {players} =data
+            console.log("PLAYER CHECK: ",!players.includes(loggedName),"LOGNAME: ", loggedName)
+            if(!players.includes(loggedName)){
+                console.log("PLayer came with this logic: ",!players.includes(loggedName))
+                if(!players[1] && playerNum==0){
+                    console.log("Player IDed as #1")
+                    setPlayerNum(1)
+                    players[1]=loggedName
+                }
+                else if(!players[2] && playerNum==0){
+                    console.log("Player IDed as #2")
+                    setPlayerNum(2)
+                    players[2]= loggedName
+                }
+
             }
-            else{
-                setPlayerNum(2)
-                readyPlayer = {player2: loggedName}
-            }
+            
            
                         fetch(`${url}/activity/${selectedGame}`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify(readyPlayer)
+                            body: JSON.stringify({players})
                         })
                             .then(incoming => incoming.json())
                             .then(response => {
@@ -223,16 +232,24 @@ export default function ChessGame() {
     }
 
     const exitPlayer = () =>{
-        let readyPlayer={}
-        if(playerNum==1)  readyPlayer={player1: ""}
-        if(playerNum==2)  readyPlayer={player2: ""}
+        console.log("LEAVING")
+        let leavingPlayer={}
+        if(playerNum==1){
+            leavingPlayer={player1: ""}
+            console.log("Player 1 is leaving")
+
+        }
+        if(playerNum==2) {
+            leavingPlayer={player2: ""}
+            console.log("Player 2 is leaving")
+        } 
 
         fetch(`${url}/activity/${selectedGame}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(readyPlayer)
+            body: JSON.stringify({player1:""})
         })
         .then(incoming => incoming.json())
         .then(response => {
@@ -303,14 +320,14 @@ export default function ChessGame() {
                             ? chat.map(line => line + String.fromCharCode(15) + String.fromCharCode(10))
                             : "Game history empty"
                     }</article>
-                    <textarea rows="1" onChange={e => setUserComment(e.target.value)} onKeyDownCapture={e => {
+                    <input rows="1" onChange={e => setUserComment(e.target.value)} onKeyDownCapture={e => {
                         if (e.key == "Enter") {
                             const pass = e.target.value
                             e.target.value = ""
                             handleActivity(pass)
                             e.target.value = ""
                         }
-                    }} placeholder="Send message here"></textarea>
+                    }} placeholder="Send message here"></input>
                 </div>
 
 

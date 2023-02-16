@@ -3,11 +3,11 @@
   padding: 10px;
   min-width: 100vw;
   height: auto;
-  min-height: auto;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: wheat;
 }

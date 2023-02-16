@@ -43,7 +43,7 @@ export default function Lobby() {
         <>
 
             <div className="cover-game">
-            <ChessGame />
+            <ChessGame viewOnly={1}/>
             </div>
                     {/* <p>{con || " console"}</p> */}
                     <div className="lobby-container">

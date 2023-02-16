@@ -19,6 +19,11 @@
     translate: -210px 0px;
     position: absolute;
     z-index: 1;
+    border:solid 3px black;
+    border-radius: 35px;
+    background: linear-gradient(0deg,#ffffff 0%, #5d5d5d 65%);
+    background: -webkit-linear-gradient(0deg,#ffffff 0%, #5d5d5d 65%);
+    background: -moz-linear-gradient(0deg,#ffffff 0%, #5d5d5d 65%);
 }
 .logout-btn{
     background-color: lightblue   ;
@@ -27,6 +32,11 @@
     translate: 200px 0px;
     position: absolute;
     z-index: 1;
+    border:solid 3px black;
+    border-radius: 35px;
+    background: linear-gradient(0deg,#ffffff 0%, #5d5d5d 65%);
+    background: -webkit-linear-gradient(0deg,#ffffff 0%, #5d5d5d 65%);
+    background: -moz-linear-gradient(0deg,#ffffff 0%, #5d5d5d 65%);
 }
 .join-btn{
     background-color: greenyellow   ;

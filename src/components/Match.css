@@ -1,14 +1,14 @@
 
 .match:hover + .enter-btn{
-    translate: 50% -100px;
+    translate: 45% -100px;
     transition: 0.2s linear;
 }
 
 .enter-btn:hover{
-translate: 50% -100px;
+translate: 45% -100px;
 }
 .enter-btn{
-    background-color: greenyellow   ;
+    background-color: wheat   ;
     width: 100%;
     display: flex;
     justify-items: left;
@@ -22,7 +22,9 @@ translate: 50% -100px;
     z-index: 1;
 }
 .enter-btn-no{
-    background-color: rgb(193, 51, 4)   ;
+    background-color: rgb(95, 0, 0);
+    opacity: 0.7;
+    color: whitesmoke;
     width: 100%;
     display: flex;
     justify-items: left;
@@ -30,7 +32,7 @@ translate: 50% -100px;
     font-size: 30px;
     padding: 20px;
     border-radius: 50px;
-    translate: 50% -100px;
+    translate: 45% -100px;
     transition: 0.2s linear;
     position: absolute;
     z-index: 1;
@@ -40,7 +42,7 @@ translate: 50% -100px;
 .match{
 
     background-color: lightskyblue;
-    color: black;
+    color: wheat;
     height:auto;
     width: 300px;
     display: flex;

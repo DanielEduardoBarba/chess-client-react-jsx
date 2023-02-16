@@ -52,25 +52,9 @@ p {
 }
 .chess-header{
     display: flex;
-    align-items: center;
-   
-}
-.leave-btn{
-    background-color: lightcoral;
-    color: black;
-    height:70px;
-    width: 70px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    padding: 20px;
-    border:solid 3px black;
-    border-radius: 35px;
 }
 .game-btn{
-    background-color: lightgreen;
+    background-color: grey;
     color: black;
     height:80px;
     width: 180px;
@@ -82,12 +66,34 @@ p {
     
     border:solid 3px black;
     border-radius: 35px;
+    background: linear-gradient(311deg,#ffffff 0%, #5d5d5d 65%);
+    background: -webkit-linear-gradient(311deg,#ffffff 0%, #5d5d5d 65%);
+    background: -moz-linear-gradient(311deg,#ffffff 0%, #5d5d5d 65%);
+    
+}
+.leave-btn{
+    background-color: silver;
+    color: black;
+    height:70px;
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    padding: 20px;
+    border:solid 3px black;
+    border-radius: 35px;
+    background: linear-gradient(30deg,#ffffff 0%, #5d5d5d 65%);
+    background: -webkit-linear-gradient(30deg,#ffffff 0%, #5d5d5d 65%);
+    background: -moz-linear-gradient(30deg,#ffffff 0%, #5d5d5d 65%);
 }
 
 .leave-btn:active{
     box-shadow: 0px 0px 23px 11px #ff0000bf;
     -webkit-box-shadow: 0px 0px 23px 11px #ff0000bf;
     -moz-box-shadow: 0px 0px 23px 11px #ff0000bf;
+    
 }
 
 .chess-board {
@@ -139,10 +145,10 @@ button:active {
     margin: 20px;
 
 }
-.message-container > textarea {
+.message-container > input {
    
-    background-color: #ffffff;
-    height:40px;
+    background-color: white;
+    height:15px;
     width: auto;
     border-radius: 10px;
     overflow: scroll;
@@ -156,7 +162,7 @@ button:active {
     flex-direction: column-reverse;
     border: 3px solid black;
    padding: 10px;
-    font-size: 20px;
+    font-size: 15px;
     
     background-color:rgb(255, 255, 255);
     color: black;
@@ -180,7 +186,6 @@ h2>div{
 }
 h3{
     width: 90%;
-    color: white;
     font-size: 15px;
     margin: 0;
     justify-items: left;

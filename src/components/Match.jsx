@@ -11,10 +11,10 @@ export default function Match({lobby}){
         <>
         <div className="match" onClick={()=>{setSelectedGame(lobby.boardID)}}>
             <article>Game: {lobby.boardID}</article>
-            <div>P1: {lobby.player1}</div>
-            <div>P2: {lobby.player2}</div>
+            <div>P1: {lobby.players[1]}</div>
+            <div>P2: {lobby.players[2]}</div>
         </div>
-        {   lobby.player1=="" || lobby.player2==""
+        {   lobby.players[1]=="" || lobby.players[2]==""
             ?<button className="enter-btn" onClick={() => {
                 setSelectedGame(lobby.boardID)
                 setPage(lobby.boardID)

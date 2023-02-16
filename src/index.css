@@ -1,12 +1,18 @@
 .background {
-  background-image: url("./assets/woodtable.jpg");
-  
+ 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0 ;
+}
+.body-main {
+  /* background-image: url("./assets/welcomeBackground.jpg"); */
+  background: linear-gradient(130deg,#ffffff 0%, #000000 65%);
+    background: -webkit-linear-gradient(130deg,#ffffff 0%, #000000 65%);
+    background: -moz-linear-gradient(130deg,#ffffff 0%, #000000 65%);
+ 
 }
 
 code {
