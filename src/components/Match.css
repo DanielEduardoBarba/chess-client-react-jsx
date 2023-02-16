@@ -1,0 +1,96 @@
+
+.match:hover + .enter-btn{
+    translate: 50% -100px;
+    transition: 0.2s linear;
+}
+
+.enter-btn:hover{
+translate: 50% -100px;
+}
+.enter-btn{
+    background-color: greenyellow   ;
+    width: 100%;
+    display: flex;
+    justify-items: left;
+    width: 400px;
+    font-size: 30px;
+    padding: 20px;
+    border-radius: 50px;
+    translate: 120% -100px;
+    transition: 0.2s linear;
+    position: absolute;
+    z-index: 1;
+}
+.enter-btn-no{
+    background-color: rgb(193, 51, 4)   ;
+    width: 100%;
+    display: flex;
+    justify-items: left;
+    width: 400px;
+    font-size: 30px;
+    padding: 20px;
+    border-radius: 50px;
+    translate: 50% -100px;
+    transition: 0.2s linear;
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.match{
+
+    background-color: lightskyblue;
+    color: black;
+    height:auto;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    border:solid 3px black;
+    border-radius: 20px;
+    position: relative;
+    background: linear-gradient(311deg,#ffffff 0%, #000000 65%);
+    background: -webkit-linear-gradient(311deg,#ffffff 0%, #000000 65%);
+    background: -moz-linear-gradient(311deg,#ffffff 0%, #000000 65%);
+   
+}
+
+.match:hover{
+    transform: scale(1.05);
+    background-color: lightcyan;
+    transition: 0.1s;
+    box-shadow: -1px -1px 23px 11px #ffffffbf;
+    -webkit-box-shadow: -1px -1px 23px 11px #ffffffbf;
+    -moz-box-shadow: -1px -1px 23px 11px #ffffffbf;
+}
+.match:not(:hover){
+    transform: scale(1);
+    transition: 0.4s;
+}
+.match:active{
+    transform: scale(0.9);
+    transition: 0.1s;
+    background-color: rgb(135, 250, 183);
+    box-shadow: -1px -1px 23px 20px #00ff5ebf;
+    -webkit-box-shadow: -1px -1px 23px 20px #00ff44bf;
+    -moz-box-shadow: -1px -1px 23px 20px #4dff00bf;
+    
+}
+
+button{
+    border-radius: 5px;
+   font-size: 20px;
+   background-color: beige;
+}
+
+.match>div{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: left;
+    padding: 10px;
+    width: 100%;
+
+}

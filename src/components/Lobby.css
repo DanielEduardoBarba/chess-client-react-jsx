@@ -1,0 +1,71 @@
+.lobby-container:not(:hover){
+    opacity: 0.1;
+}
+.lobby-container:not(:hover) + .refresh-btn{
+    opacity: 0.3;
+}
+.lobby-container:not(:hover) + .refresh-btn + .join-btn{
+    opacity: 0.3;
+}
+.lobby-container:not(:hover) + .refresh-btn +.logout-btn{
+    opacity: 0.3;
+}
+
+.refresh-btn{
+    background-color: lightblue   ;
+    font-size: 25px;
+    
+    padding: 10px;
+    translate: -210px 0px;
+    position: absolute;
+    z-index: 1;
+}
+.logout-btn{
+    background-color: lightblue   ;
+    font-size: 25px;
+    padding: 10px;
+    translate: 200px 0px;
+    position: absolute;
+    z-index: 1;
+}
+.join-btn{
+    background-color: greenyellow   ;
+    font-size: 30px;
+    padding: 20px;
+    border-radius: 50px;
+    translate: 30vw 135vh;
+    position: absolute;
+    z-index: 1;
+    
+}
+.cover-game{
+    pointer-events: none;
+}
+
+
+.lobby-container{
+    background-color: lightgray;
+    color: black;
+    height: 650px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    margin: 10px;
+    padding: 40px;
+    border:solid 3px black;
+    border-radius: 20px;
+    box-shadow: 10px 10px 23px 11px #000000bf;
+    -webkit-box-shadow: 10px 10px 23px 11px #000000bf;
+    -moz-box-shadow: 10px 10px 23px 11px #000000bf;
+
+  
+    position: relative;
+    position: absolute;
+
+    overflow: scroll;
+    overflow-x: hidden;
+   
+}
+

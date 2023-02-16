@@ -1,0 +1,190 @@
+.blackSquare {
+    background-color: lightslategray;
+    color: black;
+    height: 70px;
+    width: 70px;
+    font-size: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.whiteSquare {
+    
+    background-color: white;
+    color: black;
+    height: 70px;
+    width: 70px;
+    font-size: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.chess-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    min-width: 60%;
+    border-radius: 0px;
+ 
+}
+
+p {
+    background-color: lightgray;
+    color: black;
+    width: 300px;
+    height: 50px;
+    font-size: 30px;
+    border: solid 3px black;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 10px 10px 23px 11px #0000008f;
+    -webkit-box-shadow: 10px 10px 23px 11px #0000008f;
+    -moz-box-shadow: 10px 10px 23px 11px #0000008f;
+
+}
+.chess-header{
+    display: flex;
+    align-items: center;
+   
+}
+.leave-btn{
+    background-color: lightcoral;
+    color: black;
+    height:70px;
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    padding: 20px;
+    border:solid 3px black;
+    border-radius: 35px;
+}
+.game-btn{
+    background-color: lightgreen;
+    color: black;
+    height:80px;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    
+    border:solid 3px black;
+    border-radius: 35px;
+}
+
+.leave-btn:active{
+    box-shadow: 0px 0px 23px 11px #ff0000bf;
+    -webkit-box-shadow: 0px 0px 23px 11px #ff0000bf;
+    -moz-box-shadow: 0px 0px 23px 11px #ff0000bf;
+}
+
+.chess-board {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    height: 560px;
+    width: 560px;
+    margin: 20px;
+    box-shadow: 10px 10px 23px 11px #000000bf;
+    -webkit-box-shadow: 10px 10px 23px 11px #000000bf;
+    -moz-box-shadow: 10px 10px 23px 11px #000000bf;
+}
+
+.chess-container>button {
+    padding: 10px;
+    font-size: 30px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 23px 11px #0000008f;
+    -webkit-box-shadow: 10px 10px 23px 11px #0000008f;
+    -moz-box-shadow: 10px 10px 23px 11px #0000008f;
+}
+
+button:hover {
+
+    transform: scale(1.2);
+    transition: 0.3s;
+    box-shadow: -1px -1px 23px 5px #000000bf;
+    -webkit-box-shadow: -1px -1px 23px 5px #000000bf;
+    -moz-box-shadow: -1px -1px 23px 5px #000000bf;
+}
+
+button:active {
+    transform: scale(1);
+    transition: 0.02s;
+    box-shadow: -1px -1px 23px 5px #ffffffbf;
+    -webkit-box-shadow: -1px -1px 23px 5px #ffffffbf;
+    -moz-box-shadow: -1px -1px 23px 5px #ffffffbf;
+}
+
+.message-container {
+    
+    height: auto;
+    width: 500px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px;
+
+}
+.message-container > textarea {
+   
+    background-color: #ffffff;
+    height:40px;
+    width: auto;
+    border-radius: 10px;
+    overflow: scroll;
+    resize: none;
+    font-size: 15px;
+    padding: 10px;
+
+}
+.message-text{
+    display: flex;
+    flex-direction: column-reverse;
+    border: 3px solid black;
+   padding: 10px;
+    font-size: 20px;
+    
+    background-color:rgb(255, 255, 255);
+    color: black;
+    border-radius: 10px;
+    width: auto;
+    height: 150px;
+    white-space: pre-line;
+    overflow: scroll;
+}
+
+
+h2{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+}
+h2>div{
+    width: 90%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+h3{
+    width: 90%;
+    color: white;
+    font-size: 15px;
+    margin: 0;
+    justify-items: left;
+    align-items: end;
+    flex-direction: row;
+    text-shadow: 0px 0px 10px rgb(0, 0, 0);
+}

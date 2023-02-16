@@ -1,0 +1,39 @@
+.welcome-container:hover{
+    filter: blur(0px);
+    transition: 1.5s linear;
+}
+.welcome-container:not(:hover){
+    filter: blur(10px);
+    transition: 1s linear;
+}
+.welcome-container{
+    background-image: url("../assets/welcomeBackground.jpg");
+    background-position: -200px -500px;
+    background-size: 1080px 1920px ;
+    width:  100vw;
+    height: 100vh;
+    transform: scale(1.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    filter: blur(10px);
+}
+.call-to-action{
+    
+    color: greenyellow;
+    border-radius: 50px;
+    font-size: 20px;
+    padding: 20px;
+    background: #ffffff;
+    background: #ffffff;
+    background: linear-gradient(311deg,#ffffff 0%, #000000 65%);
+    background: -webkit-linear-gradient(311deg,#ffffff 0%, #000000 65%);
+    background: -moz-linear-gradient(311deg,#ffffff 0%, #000000 65%);
+    
+}
+
+
+.greeting{
+    text-shadow: 0px 0px 20px rgb(255, 255, 255);
+}
