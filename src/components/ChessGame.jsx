@@ -4,6 +4,7 @@ import "./ChessGame.css"
 import thump from "../assets/thump.wav"
 import slideRock from "../assets/slidingRock.wav"
 import { ServerContext } from "../App"
+import Square from "./Sqaure.jsx"
 
 const playThump = () => {
     new Audio(thump).play()
@@ -52,6 +53,9 @@ export default function ChessGame({viewOnly}) {
     const [playerNum, setPlayerNum] = useState(0)
     const [gamePlayers, setGamePlayers] = useState([])
     const [userComment, setUserComment] = useState("")
+    const [lastMove, setLastMove] = useState(0)
+    const [clockTimeout, setClockTimeout] = useState(0)
+
 
     //sends move command to API
     useEffect(() => {
@@ -76,11 +80,7 @@ export default function ChessGame({viewOnly}) {
                     //setServer(server)
                     
                     console.log(data)
-                    setWhitePos([...data.whitePos])
-                    setBlackPos([...data.blackPos])
-                    setChat([...data.messages])
-                    setGamePlayers([...data.players])
-
+                    passData(data)
                     //console.log("SENT MOVE and RETURNED")
 
                 })
@@ -106,10 +106,7 @@ export default function ChessGame({viewOnly}) {
     //             // if(data.blackPos != blackPos || data.whitePos != whitePos){
 
     //             //console.log("BOARD CAME BACK!!!", data, "BOARD CAME BACK!!!!")
-    //             setBlackPos([...data.blackPos])
-    //             setWhitePos([...data.whitePos])
-    //             setChat([...data.messages])
-    //             setGameData({...data})
+    //             passData(data)
     //             // }
     //         })
     //         .catch(console.alert)
@@ -118,13 +115,7 @@ export default function ChessGame({viewOnly}) {
     useEffect(()=>{
         fetch(`${url}/getboard/${selectedGame}`)
                     .then(response => response.json())
-                    .then(data => {
-                        setBlackPos([...data.blackPos])
-                        setWhitePos([...data.whitePos])
-                        setChat([...data.messages])
-                        setGamePlayers([...data.players])
-                        //setServer("Opponent moved!")
-                    })
+                    .then(passData)
     },[selectedGame])
 
     //auto refresh
@@ -137,12 +128,13 @@ export default function ChessGame({viewOnly}) {
                 fetch(`${url}/getboard/${selectedGame}`)
                     .then(response => response.json())
                     .then(data => {
-                        setBlackPos([...data.blackPos])
-                        setWhitePos([...data.whitePos])
-                        setChat([...data.messages])
-                        setGamePlayers([...data.players])
+                        passData(data)
                         
-                       // setServer("Opponent moved!")
+                            //work on this area-----------------------------
+                        if( !gamePlayers.includes(loggedName)){
+                            console.log(`Player ${loggedName} no longer allowed, knowing time ${lastMove}`)
+                        }
+                        setServer(data.message)
                     })
             }
 
@@ -167,7 +159,7 @@ export default function ChessGame({viewOnly}) {
 
 
     const handleActivity = (message) => {
-        if(message="●RESET●")chat.push(`${loggedName}: Wants to ♚ RESET ♚ the board`)
+        if(message==="●RESET●")chat.push(`${loggedName}: Wants to ♚ RESET ♚ the board`)
         else chat.push(`${loggedName}: ${message}`)
         fetch(`${url}/activity/${selectedGame}`, {
             method: "POST",
@@ -189,13 +181,25 @@ export default function ChessGame({viewOnly}) {
             .catch(console.error)
 
     }
+
+
+const passData = (data) =>{
+
+    setWhitePos([...data.whitePos])
+    setBlackPos([...data.blackPos])
+    setChat([...data.messages])
+    setGamePlayers([...data.players])
+    setLastMove(data._lastMove)
+    setClockTimeout(data._gameTimeout)
+    
+}
+
+
     const estabilishPlayer = () => {
         fetch(`${url}/getboard/${selectedGame}`)
         .then(response => response.json())
         .then(data => {
-            setBlackPos([...data.blackPos])
-            setWhitePos([...data.whitePos])
-            setChat([...data.messages])
+            passData(data)
             setServer(`Joining ${loggedName}...`)
 
             const {players} =data
@@ -214,6 +218,7 @@ export default function ChessGame({viewOnly}) {
                 }
 
             }else {
+                //handle better same name but different user issue
                     setPage(0)
                     setServer("User Conflict...")
                     return
@@ -229,7 +234,7 @@ export default function ChessGame({viewOnly}) {
                         })
                             .then(incoming => incoming.json())
                             .then(response => {
-                                const { message } = response
+                                //const { message } = response
                                 // console.log(response)
                                 setServer(response.message)
                 
@@ -294,38 +299,37 @@ export default function ChessGame({viewOnly}) {
                     <button className="game-btn">Game: {selectedGame}</button>
                 </div>
 
-                <h2>{gamePlayers[1] || "No Player..."}</h2>
+                <h2>{gamePlayers[2] || "No Player..."}</h2>
                 <div className="chess-board" onClick={playSlideRock}>
                     {
-                        BOARD.map((row, i) => row.map(
-                            (column, j) =>
-                                (Number(j) + Number(i)) % 2
-                                    ? <button key={String(j) + String(i)} className="blackSquare" onClick={() => {
+                        BOARD.map((row, i) => row.map((column, j) =><Square key={(Number(j) + Number(i))} pass={{i,j,clickOne,setClickOne,clickTwo,setClickTwo, whitePos, blackPos, setThrottle}}/>))
+                        // (Number(j) + Number(i)) % 2
+                        //             ? <button key={String(j) + String(i)} className="blackSquare" onClick={() => {
 
-                                        if (clickOne !== "") {
-                                            setClickTwo(String(j) + String(i))
-                                            setThrottle(1)
-                                        }
-                                        else setClickOne(String(j) + String(i))
-
-
-                                    }} id={String(j) + String(i)}>{placePieces(j, i, whitePos, blackPos)}</button>
-
-                                    : <button key={String(j) + String(i)} className="whiteSquare" onClick={() => {
-
-                                        if (clickOne !== "") {
-                                            setClickTwo(String(j) + String(i))
-                                            setThrottle(1)
-                                        }
-                                        else setClickOne(String(j) + String(i))
+                        //                 if (clickOne !== "") {
+                        //                     setClickTwo(String(j) + String(i))
+                        //                     setThrottle(1)
+                        //                }
+                        //                 else setClickOne(String(j) + String(i))
 
 
-                                    }} id={String(j) + String(i)}>{placePieces(j, i, whitePos, blackPos)}</button>
-                        ))
+                        //             }} id={String(j) + String(i)}>{placePieces(j, i, whitePos, blackPos)}</button>
+
+                        //             : <button key={String(j) + String(i)} className="whiteSquare" onClick={() => {
+
+                        //                 if (clickOne !== "") {
+                        //                     setClickTwo(String(j) + String(i))
+                        //                     setThrottle(1)
+                        //                 }
+                        //                 else setClickOne(String(j) + String(i))
+
+
+                        //              }} id={String(j) + String(i)}>{placePieces(j, i, whitePos, blackPos)}</button>
+                        
                     }
                 </div>
                 <button className="" onClick={()=>(handleActivity("●RESET●"))}>RESET</button>
-               <h2><div>{gamePlayers[2] || "No Player..."}</div></h2>
+               <h2><div>{gamePlayers[1] || "No Player..."}</div></h2>
                <h3><div>{`Welcome ${loggedName}!` || "No User..."}</div></h3>
              
 
@@ -378,25 +382,25 @@ export default function ChessGame({viewOnly}) {
     )
 }
 
-const wPieces = "♟♟♟♟♟♟♟♟♜♞♝♛♚♝♞♜"
-const bPieces = "♙♙♙♙♙♙♙♙♖♘♗♕♔♗♘♖"
+// const wPieces = "♟♟♟♟♟♟♟♟♜♞♝♛♚♝♞♜"
+// const bPieces = "♙♙♙♙♙♙♙♙♖♘♗♕♔♗♘♖"
 
-const placePieces = (j, i, whitePos, blackPos) => {
-    const wPiece = whitePos.filter(el => el == String(j) + String(i))
-    const bPiece = blackPos.filter(el => el == String(j) + String(i))
-    const wIndex = whitePos.indexOf(wPiece[0])
-    const bIndex = blackPos.indexOf(bPiece[0])
+// const placePieces = (j, i, whitePos, blackPos) => {
+//     const wPiece = whitePos.filter(el => el == String(j) + String(i))
+//     const bPiece = blackPos.filter(el => el == String(j) + String(i))
+//     const wIndex = whitePos.indexOf(wPiece[0])
+//     const bIndex = blackPos.indexOf(bPiece[0])
 
-    if (wPiece != "") {
-        //console.log("WHITE: ", wPiece)
-        return wPieces[wIndex]
-    }
-    if (bPiece != "") {
-        //console.log("BLACK: ", bPiece)
-        return bPieces[bIndex]
-    }
+//     if (wPiece != "") {
+//         //console.log("WHITE: ", wPiece)
+//         return wPieces[wIndex]
+//     }
+//     if (bPiece != "") {
+//         //console.log("BLACK: ", bPiece)
+//         return bPieces[bIndex]
+//     }
 
-}
+// }
 
 
 

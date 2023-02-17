@@ -22,21 +22,18 @@ const logInWithGoogle = async (setLoggedName) =>{
 
 const logInWithEmail = async (setLoggedName, email, pass ) =>{
    
-
-    
+    console.log(email,"***********", pass)
     const app = initializeApp(firebaseConfig)
     const auth = getAuth(app)
-   const _user = await signInWithEmailAndPassword(auth,email,pass)
-   console.log("RECIEVED: " , email, pass)
-        console.log(" USER: ", _user)
+    signInWithEmailAndPassword(auth,email,pass)
     .then(_user=>{
         //setServer(`Welcome ${_user}`)
-        console.log("***********", _user.user.displayName)
+        console.log("***********", _user.user.email)
 
-       setLoggedName(_user.user.displayName)
+       setLoggedName(_user.user.email)
 
     })
-    .catch(console.log("UHHHHHHHHHHHHs"))
+    .catch(console.error)
         
 
 }
@@ -50,13 +47,11 @@ return(
     <>
     <div className="signin-container" >
 
-        <form className="email-container" onSubmit={()=>{logInWithEmail(setLoggedName, email, pass)}}>
+        <form className="email-container">
             <h1>Log In</h1>
-            <p>(loggedName)</p>
             <input className="form-inputs" onChange={e=>setEmail(e.target.value)} type="email" name="email" placeholder="email"></input>
             <input className="form-inputs"  onChange={e=>setPass(e.target.value)} type="password" name="password" placeholder="password"></input>
-            <button className="form-inputs">Sign In</button>
-              
+            <button className="form-inputs" onClick={()=>{logInWithEmail(setLoggedName, email, pass)}} >Sign In</button>      
         </form>
         <button className="google-btn" onClick={()=>{logInWithGoogle(setLoggedName)}} type="primary" />
     </div>
