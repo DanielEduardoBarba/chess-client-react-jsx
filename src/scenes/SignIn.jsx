@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import {getAuth, signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider} from "firebase/auth"
+import {getAuth, signInWithEmailAndPassword, signInWithPopup,GoogleAuthProvider} from "firebase/auth"
 import { useContext, useState } from "react"
 import { ServerContext } from "../App"
 import {firebaseConfig} from "../keys.js"
@@ -10,7 +10,7 @@ const logInWithGoogle = async (setLoggedName) =>{
     const app = initializeApp(firebaseConfig)
     const auth = getAuth(app)
     const provider = new GoogleAuthProvider()
-    signInWithPopup(auth,provider)
+    signInWithPopup(auth, provider)
     .then(_user=>{
         //setServer(`Welcome ${_user}`)
         setLoggedName(_user.user.displayName)

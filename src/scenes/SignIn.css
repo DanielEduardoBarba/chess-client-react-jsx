@@ -1,13 +1,13 @@
 
 
-.signin-container:hover{
+/* .signin-container:hover{
     filter: blur(0px);
     transition: 0.5s linear;
 }
 .signin-container:not(:hover){
     filter: blur(5px);
     transition: 2s linear;
-}
+} */
 
 .signin-container{
     background-color: lightslategray;
