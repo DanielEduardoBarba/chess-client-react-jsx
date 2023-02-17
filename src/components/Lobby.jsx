@@ -47,13 +47,13 @@ export default function Lobby() {
             </div>
                     {/* <p>{con || " console"}</p> */}
                     <div className="lobby-container">
-                    <div>{games.map(lobby => (
-                        lobby.boardID
-                        ?<Match key={lobby.boardID} lobby={lobby} />
-                        :""))}</div>
+                        <button className="logout-btn" onClick={()=>{setLoggedName(0)}}>LOGOUT</button>
+                        <button className="refresh-btn" onClick={getLobby}>Refresh</button>
+                            <div>{games.map(lobby => (
+                                lobby.boardID
+                                ?<Match key={lobby.boardID} lobby={lobby} />
+                                :""))}</div>
                     </div>
-                    <button className="refresh-btn" onClick={getLobby}>Refresh</button>
-                    <button className="logout-btn" onClick={()=>{setLoggedName(0)}}>LOGOUT</button>
                 
                 
                     {/* <button className="join-btn" onClick={() => {

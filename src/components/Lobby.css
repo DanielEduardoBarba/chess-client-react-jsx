@@ -14,11 +14,11 @@
 .refresh-btn{
     background-color: lightblue   ;
     font-size: 25px;
-    
+    margin: 10px;
     padding: 10px;
-    translate: -210px 0px;
+    /*translate: -210px 0px;
     position: absolute;
-    z-index: 1;
+    z-index: 1; */
     border:solid 3px black;
     border-radius: 35px;
     background: linear-gradient(0deg,#ffffff 0%, #5d5d5d 65%);
@@ -29,9 +29,9 @@
     background-color: lightblue   ;
     font-size: 25px;
     padding: 10px;
-    translate: 200px 0px;
+    /*translate: 200px 0px;
     position: absolute;
-    z-index: 1;
+    z-index: 1; */
     border:solid 3px black;
     border-radius: 35px;
     background: linear-gradient(0deg,#ffffff 0%, #5d5d5d 65%);

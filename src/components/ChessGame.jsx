@@ -16,7 +16,7 @@ const playSlideRock = () => {
 
 const url = MAIN_URL
 const refreshRate = 1000
-let maxAutoRefreshCalls = 5
+let maxAutoRefreshCalls = 20
 
 const BOARD = [
     ["A8", "A7", "A6", "A5", "A4", "A3", "A2", "A1"],
@@ -64,6 +64,7 @@ export default function ChessGame({viewOnly}) {
 
         console.log("MANUAL REFRESH")
         if (clickOne && clickTwo) {
+            //setAfk(0)
             fetch(`${url}/move/${selectedGame}`, {
                 method: "POST",
                 headers: {
@@ -78,10 +79,10 @@ export default function ChessGame({viewOnly}) {
                     
                     //setMoves(moves + 1)
                     //setServer(server)
-                    
+                   // setAfk(maxAutoRefreshCalls)
+                    console.log("MANUAL response")
                     console.log(data)
                     passData(data)
-                    //console.log("SENT MOVE and RETURNED")
 
                 })
                 .catch(console.error)
@@ -131,10 +132,17 @@ export default function ChessGame({viewOnly}) {
                         passData(data)
                         
                             //work on this area-----------------------------
-                        if( !gamePlayers.includes(loggedName)){
-                            console.log(`Player ${loggedName} no longer allowed, knowing time ${lastMove}`)
+                        try{
+                            if( gamePlayers[playerNum].includes("*")){
+                            // console.log("PLAYER SPOT 1: ", gamePlayers[1])
+                            // console.log("PLAYER SPOT 2: ", gamePlayers[2])
+                            // console.log(`Player ${loggedName} no longer allowed, knowing time ${lastMove}`)
+                            exitPlayer()
                         }
                         setServer(data.message)
+                        }catch{
+                            console.error("Player kick montoring failed(or init start)...")
+                        }
                     })
             }
 
@@ -203,16 +211,16 @@ const passData = (data) =>{
             setServer(`Joining ${loggedName}...`)
 
             const {players} =data
-            console.log("PLAYER CHECK: ",!players.includes(loggedName),"LOGNAME: ", loggedName)
+            //console.log("PLAYER CHECK: ",!players.includes(loggedName),"LOGNAME: ", loggedName)
             if(!players.includes(loggedName)){
-                console.log("PLayer came with this logic: ",!players.includes(loggedName))
+               // console.log("PLayer came with this logic: ",!players.includes(loggedName))
                 if(!players[1] && playerNum==0){
-                    console.log("Player IDed as #1")
+                   // console.log("Player IDed as #1")
                     setPlayerNum(1)
                     players[1]=loggedName
                 }
                 else if(!players[2] && playerNum==0){
-                    console.log("Player IDed as #2")
+                    //console.log("Player IDed as #2")
                     setPlayerNum(2)
                     players[2]= loggedName
                 }
@@ -276,7 +284,7 @@ const passData = (data) =>{
             if(isSuccess){
                 setPlayerNum(0)
                 setPage(0)
-                console.log("Left GAME")
+                //console.log("Left GAME")
 
             }
                 // setMoves(moves + 1)
@@ -328,7 +336,7 @@ const passData = (data) =>{
                         
                     }
                 </div>
-                <button className="" onClick={()=>(handleActivity("●RESET●"))}>RESET</button>
+                {/* <button className="" onClick={()=>(handleActivity("●RESET●"))}>RESET</button> */}
                <h2><div>{gamePlayers[1] || "No Player..."}</div></h2>
                <h3><div>{`Welcome ${loggedName}!` || "No User..."}</div></h3>
              
