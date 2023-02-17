@@ -1,10 +1,10 @@
 .welcome-container:hover{
     filter: blur(0px);
-    transition: 1.5s linear;
+    transition: 0.5s linear;
 }
 .welcome-container:not(:hover){
     filter: blur(10px);
-    transition: 1s linear;
+    transition: 2s linear;
 }
 .welcome-container{
     background-image: url("../assets/welcomeBackground.jpg");

@@ -50,6 +50,7 @@ export default function ChessGame({viewOnly}) {
     const [gameData, setGameData] = useState({})
     const [chat, setChat] = useState([])
     const [playerNum, setPlayerNum] = useState(0)
+    const [gamePlayers, setGamePlayers] = useState([])
     const [userComment, setUserComment] = useState("")
 
     //sends move command to API
@@ -78,6 +79,7 @@ export default function ChessGame({viewOnly}) {
                     setWhitePos([...data.whitePos])
                     setBlackPos([...data.blackPos])
                     setChat([...data.messages])
+                    setGamePlayers([...data.players])
 
                     //console.log("SENT MOVE and RETURNED")
 
@@ -120,7 +122,8 @@ export default function ChessGame({viewOnly}) {
                         setBlackPos([...data.blackPos])
                         setWhitePos([...data.whitePos])
                         setChat([...data.messages])
-                        setServer("Opponent moved!")
+                        setGamePlayers([...data.players])
+                        //setServer("Opponent moved!")
                     })
     },[selectedGame])
 
@@ -137,7 +140,9 @@ export default function ChessGame({viewOnly}) {
                         setBlackPos([...data.blackPos])
                         setWhitePos([...data.whitePos])
                         setChat([...data.messages])
-                        setServer("Opponent moved!")
+                        setGamePlayers([...data.players])
+                        
+                       // setServer("Opponent moved!")
                     })
             }
 
@@ -161,8 +166,9 @@ export default function ChessGame({viewOnly}) {
     },[])
 
 
-    const handleActivity = (e) => {
-        chat.push(`player1: ${e}`)
+    const handleActivity = (message) => {
+        if(message="●RESET●")chat.push(`${loggedName}: Wants to ♚ RESET ♚ the board`)
+        else chat.push(`${loggedName}: ${message}`)
         fetch(`${url}/activity/${selectedGame}`, {
             method: "POST",
             headers: {
@@ -207,6 +213,10 @@ export default function ChessGame({viewOnly}) {
                     players[2]= loggedName
                 }
 
+            }else {
+                    setPage(0)
+                    setServer("User Conflict...")
+                    return
             }
             
            
@@ -232,35 +242,39 @@ export default function ChessGame({viewOnly}) {
     }
 
     const exitPlayer = () =>{
-        console.log("LEAVING")
-        let leavingPlayer={}
-        if(playerNum==1){
-            leavingPlayer={player1: ""}
-            console.log("Player 1 is leaving")
-
-        }
-        if(playerNum==2) {
-            leavingPlayer={player2: ""}
-            console.log("Player 2 is leaving")
-        } 
-
-        fetch(`${url}/activity/${selectedGame}`, {
-            method: "POST",
+        console.log("LEAVING Player: ",playerNum)
+        // let players=[]
+        // if(playerNum==1){
+        //     players[1]=""
+        //     console.log("Player 1 is leaving")
+            
+        // }
+        // if(playerNum==2) {
+        //     players[2]=""
+        //     console.log("Player 2 is leaving")
+        // } 
+        
+       // console.log(players)
+        fetch(`${url}/exit/${selectedGame}`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({player1:""})
+            body: JSON.stringify({exit: playerNum})
         })
         .then(incoming => incoming.json())
         .then(response => {
-            const { message } = response
-            // console.log(response)
+            const { isSuccess } = response
+            console.log(response)
             setServer(response.message)
-            
-            setPlayerNum(0)
-            setPage(0)
+            console.log("isSuccess: ", isSuccess)
+            if(isSuccess){
+                setPlayerNum(0)
+                setPage(0)
+                console.log("Left GAME")
+
+            }
                 // setMoves(moves + 1)
-                // console.log("SENT UPDATE ACTIVITY")
 
             })
             .catch(console.error)
@@ -280,7 +294,7 @@ export default function ChessGame({viewOnly}) {
                     <button className="game-btn">Game: {selectedGame}</button>
                 </div>
 
-                <h2>{gameData.player1 || "No Player..."}</h2>
+                <h2>{gamePlayers[1] || "No Player..."}</h2>
                 <div className="chess-board" onClick={playSlideRock}>
                     {
                         BOARD.map((row, i) => row.map(
@@ -310,7 +324,8 @@ export default function ChessGame({viewOnly}) {
                         ))
                     }
                 </div>
-               <h2><div>{gameData.player2 || "No Player..."}</div></h2>
+                <button className="" onClick={()=>(handleActivity("●RESET●"))}>RESET</button>
+               <h2><div>{gamePlayers[2] || "No Player..."}</div></h2>
                <h3><div>{`Welcome ${loggedName}!` || "No User..."}</div></h3>
              
 
