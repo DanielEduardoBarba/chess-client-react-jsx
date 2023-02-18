@@ -2,5 +2,5 @@ Online chess app, that communicates with a built api server and database found [
 
 ![](./src/assets/Online-Chess.png)
 
-s-client-react-jsx
+# s-client-react-jsx
 [Try it out!](http://chess-online-deb.firebaseapp.com)
