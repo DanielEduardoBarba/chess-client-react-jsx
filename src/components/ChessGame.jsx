@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react"
-import { MAIN_URL } from "../keys.js"
-import "./ChessGame.css"
-import thump from "../assets/thump.wav"
-import slideRock from "../assets/slidingRock.wav"
 import { ServerContext } from "../App"
+import { MAIN_URL } from "../keys.js"
+import slideRock from "../assets/slidingRock.wav"
 import Square from "./Sqaure.jsx"
+import thump from "../assets/thump.wav"
+import "./ChessGame.css"
 
 const playThump = () => {
     new Audio(thump).play()
@@ -15,7 +15,7 @@ const playSlideRock = () => {
 }
 
 const url = MAIN_URL
-const refreshRate = 1000
+const refreshRate = 1500
 let maxAutoRefreshCalls = 20
 
 const BOARD = [
@@ -27,42 +27,32 @@ const BOARD = [
     ["F8", "F7", "F6", "F5", "F4", "F3", "F2", "F1"],
     ["G8", "G7", "G6", "G5", "G4", "G3", "G2", "G1"],
     ["H8", "H7", "H6", "H5", "H4", "H3", "H2", "H1"]
-
 ]
 
 
-export default function ChessGame({viewOnly}) {
+export default function ChessGame({ viewOnly }) {
     //const {gameID} = gameInfo
 
-    const { loggedName, setLoggedName, server, setServer,page, setPage, selectedGame, setSelectedGame } = useContext(ServerContext)
+    const { loggedName, server, setServer, page, setPage, selectedGame } = useContext(ServerContext)
 
     const [clickOne, setClickOne] = useState("")
     const [clickTwo, setClickTwo] = useState("")
-    const [moves, setMoves] = useState(0)
-    
-    const [realTime, setRealTime] = useState(true)
-    const [throttle, setThrottle] = useState(1)
+
     const [cycle, setCycle] = useState(1)
     const [afk, setAfk] = useState(maxAutoRefreshCalls)
 
 
     const [blackPos, setBlackPos] = useState([])
     const [whitePos, setWhitePos] = useState([])
-    const [gameData, setGameData] = useState({})
-    const [chat, setChat] = useState([])
-    const [playerNum, setPlayerNum] = useState(0)
+
     const [gamePlayers, setGamePlayers] = useState([])
-    const [userComment, setUserComment] = useState("")
-    const [lastMove, setLastMove] = useState(0)
-    const [clockTimeout, setClockTimeout] = useState(0)
-
-
+    const [playerNum, setPlayerNum] = useState(0)
+    const [chat, setChat] = useState([])
+  
     //sends move command to API
     useEffect(() => {
-        // if (throttle) {
-
-
         console.log("MANUAL REFRESH")
+
         if (clickOne && clickTwo) {
             //setAfk(0)
             fetch(`${url}/move/${selectedGame}`, {
@@ -71,15 +61,11 @@ export default function ChessGame({viewOnly}) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ "from": clickOne, "to": clickTwo })
-                })
+            })
                 .then(incoming => incoming.json())
                 .then(data => {
-                    const { message } = data
+
                     setServer(data.message)
-                    
-                    //setMoves(moves + 1)
-                    //setServer(server)
-                   // setAfk(maxAutoRefreshCalls)
                     console.log("MANUAL response")
                     console.log(data)
                     passData(data)
@@ -88,36 +74,13 @@ export default function ChessGame({viewOnly}) {
                 .catch(console.error)
             setClickOne("")
         }
-        // }
-        // setClickOne("")
-        // setThrottle(0)
-        // console.log(throttle)
-        // console.log(clickOne)
-
     }, [clickTwo])
 
-    //MANUAL updates board with board AFTER a change in black or white positions
-    // useEffect(() => {
-    //     fetch(`${url}/getboard/${selectedGame}`)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             // console.log("OK")
-    //             // console.log(data.blackPos,"--BLACK--",blackPos)
-    //             // console.log(data.whitePos,"--WHITE--",whitePos)
-    //             // if(data.blackPos != blackPos || data.whitePos != whitePos){
-
-    //             //console.log("BOARD CAME BACK!!!", data, "BOARD CAME BACK!!!!")
-    //             passData(data)
-    //             // }
-    //         })
-    //         .catch(console.alert)
-    // }, [moves])
-
-    useEffect(()=>{
+    useEffect(() => {
         fetch(`${url}/getboard/${selectedGame}`)
-                    .then(response => response.json())
-                    .then(passData)
-    },[selectedGame])
+            .then(response => response.json())
+            .then(passData)
+    }, [selectedGame])
 
     //auto refresh
     useEffect(() => {
@@ -126,174 +89,128 @@ export default function ChessGame({viewOnly}) {
             if (afk > 0) {
                 setAfk(afk - 1)
                 console.log("Auto REFRESH")
+
                 fetch(`${url}/getboard/${selectedGame}`)
                     .then(response => response.json())
                     .then(data => {
+
                         passData(data)
-                        
-                            //work on this area-----------------------------
-                        try{
-                            if( gamePlayers[playerNum].includes("*")){
-                            // console.log("PLAYER SPOT 1: ", gamePlayers[1])
-                            // console.log("PLAYER SPOT 2: ", gamePlayers[2])
-                            // console.log(`Player ${loggedName} no longer allowed, knowing time ${lastMove}`)
-                            exitPlayer()
-                        }
-                        setServer(data.message)
-                        }catch{
+                        try {
+                            if (gamePlayers[playerNum].includes("*")) exitPlayer()
+                            setServer(data.message)
+                        } catch {
                             console.error("Player kick montoring failed(or init start)...")
                         }
                     })
             }
 
             if (cycle > 0) setCycle(cycle - 1)
-            else {
-
-                setCycle(1)
-
-            }
-
-
+            else setCycle(1)
+            
         }, refreshRate)
-        // console.log(throttle)
-        // console.log(clickOne)
-        // console.log(clickTwo)
     }, [cycle])//perpetual and intentionally loops
 
-    useEffect(()=>{
-        console.log("VIEWONLY", viewOnly)
-       if(!viewOnly) estabilishPlayer()
-    },[])
+    useEffect(() => {
+        if (!viewOnly) estabilishPlayer()
+    }, [])
 
 
     const handleActivity = (message) => {
-        if(message==="●RESET●")chat.push(`${loggedName}: Wants to ♚ RESET ♚ the board`)
+
+        if (message === "●RESET●") chat.push(`${loggedName}: Wants to ♚ RESET ♚ the board`)
         else chat.push(`${loggedName}: ${message}`)
+
         fetch(`${url}/activity/${selectedGame}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ messages: chat  })
+            body: JSON.stringify({ messages: chat })
         })
             .then(incoming => incoming.json())
             .then(response => {
-                const { message } = response
-                // console.log(response)
-                setServer(response.message)
-
-                // setMoves(moves + 1)
-                // console.log("SENT UPDATE ACTIVITY")
-
-            })
+                    const { message } = response
+                    setServer(response.message)
+                 })
             .catch(console.error)
-
     }
 
 
-const passData = (data) =>{
+    const passData = (data) => {
 
-    setWhitePos([...data.whitePos])
-    setBlackPos([...data.blackPos])
-    setChat([...data.messages])
-    setGamePlayers([...data.players])
-    setLastMove(data._lastMove)
-    setClockTimeout(data._gameTimeout)
-    
-}
+        setWhitePos([...data.whitePos])
+        setBlackPos([...data.blackPos])
+        setChat([...data.messages])
+        setGamePlayers([...data.players])
+
+    }
 
 
     const estabilishPlayer = () => {
+
         fetch(`${url}/getboard/${selectedGame}`)
-        .then(response => response.json())
-        .then(data => {
-            passData(data)
-            setServer(`Joining ${loggedName}...`)
+            .then(response => response.json())
+            .then(data => {
 
-            const {players} =data
-            //console.log("PLAYER CHECK: ",!players.includes(loggedName),"LOGNAME: ", loggedName)
-            if(!players.includes(loggedName)){
-               // console.log("PLayer came with this logic: ",!players.includes(loggedName))
-                if(!players[1] && playerNum==0){
-                   // console.log("Player IDed as #1")
-                    setPlayerNum(1)
-                    players[1]=loggedName
-                }
-                else if(!players[2] && playerNum==0){
-                    //console.log("Player IDed as #2")
-                    setPlayerNum(2)
-                    players[2]= loggedName
-                }
+                setServer(`Joining ${loggedName}...`)
 
-            }else {
-                //handle better same name but different user issue
+                passData(data)
+                const { players } = data
+                
+                if (!players.includes(loggedName)) {
+                   if (!players[1] && playerNum == 0) {
+                        setPlayerNum(1)
+                        players[1] = loggedName
+                    }
+                    else if (!players[2] && playerNum == 0) {
+                        setPlayerNum(2)
+                        players[2] = loggedName
+                    }
+
+                } else {
+                    //handled with cron server mintoring
+                    //this kick out handling is a temp inconvience and workaround
                     setPage(0)
                     setServer("User Conflict...")
                     return
-            }
-            
-           
-                        fetch(`${url}/activity/${selectedGame}`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({players})
-                        })
-                            .then(incoming => incoming.json())
-                            .then(response => {
-                                //const { message } = response
-                                // console.log(response)
-                                setServer(response.message)
-                
-                                // setMoves(moves + 1)
-                                // console.log("SENT UPDATE ACTIVITY")
-                
-                            })
-                            .catch(console.error)
-        })
+                }
+
+                fetch(`${url}/activity/${selectedGame}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ players })
+                    })
+                    .then(incoming => incoming.json())
+                    .then(response => {
+                        setServer(response.message)
+                        // console.log("SENT UPDATE ACTIVITY")
+                    })
+                    .catch(console.error)
+            })
     }
 
-    const exitPlayer = () =>{
-        console.log("LEAVING Player: ",playerNum)
-        // let players=[]
-        // if(playerNum==1){
-        //     players[1]=""
-        //     console.log("Player 1 is leaving")
-            
-        // }
-        // if(playerNum==2) {
-        //     players[2]=""
-        //     console.log("Player 2 is leaving")
-        // } 
-        
-       // console.log(players)
+    const exitPlayer = () => {
+        //console.log("LEAVING Player: ", playerNum)
+    
         fetch(`${url}/exit/${selectedGame}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({exit: playerNum})
-        })
-        .then(incoming => incoming.json())
-        .then(response => {
-            const { isSuccess } = response
-            console.log(response)
-            setServer(response.message)
-            console.log("isSuccess: ", isSuccess)
-            if(isSuccess){
-                setPlayerNum(0)
-                setPage(0)
-                //console.log("Left GAME")
-
-            }
-                // setMoves(moves + 1)
-
-            })
-            .catch(console.error)
-
-
-
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ exit: playerNum })
+                })
+                .then(incoming => incoming.json())
+                .then(response => {
+                    const { isSuccess } = response
+                    setServer(response.message)
+                    if (isSuccess) {
+                        setPlayerNum(0)
+                        setPage(0)
+                    }
+                })
+                .catch(console.error)
     }
 
 
@@ -301,45 +218,26 @@ const passData = (data) =>{
         <>
 
             <div className="chess-container" onClick={() => { setAfk(maxAutoRefreshCalls) }} >
+
                 <div className="chess-header">
-                    <button className="leave-btn" onClick={()=>exitPlayer()}>Leave</button>
+                    <button className="leave-btn" onClick={() => exitPlayer()}>Leave</button>
                     <p>{server || "Server"}</p>
                     <button className="game-btn">Game: {selectedGame}</button>
                 </div>
 
                 <h2>{gamePlayers[2] || "No Player..."}</h2>
+
                 <div className="chess-board" onClick={playSlideRock}>
                     {
-                        BOARD.map((row, i) => row.map((column, j) =><Square key={(Number(j) + Number(i))} pass={{i,j,clickOne,setClickOne,clickTwo,setClickTwo, whitePos, blackPos, setThrottle}}/>))
-                        // (Number(j) + Number(i)) % 2
-                        //             ? <button key={String(j) + String(i)} className="blackSquare" onClick={() => {
-
-                        //                 if (clickOne !== "") {
-                        //                     setClickTwo(String(j) + String(i))
-                        //                     setThrottle(1)
-                        //                }
-                        //                 else setClickOne(String(j) + String(i))
-
-
-                        //             }} id={String(j) + String(i)}>{placePieces(j, i, whitePos, blackPos)}</button>
-
-                        //             : <button key={String(j) + String(i)} className="whiteSquare" onClick={() => {
-
-                        //                 if (clickOne !== "") {
-                        //                     setClickTwo(String(j) + String(i))
-                        //                     setThrottle(1)
-                        //                 }
-                        //                 else setClickOne(String(j) + String(i))
-
-
-                        //              }} id={String(j) + String(i)}>{placePieces(j, i, whitePos, blackPos)}</button>
-                        
-                    }
+                        BOARD.map((row, i) => row.map((column, j) =>{
+                        return <Square key={(Number(j) + Number(i))} pass={{ i, j, clickOne, setClickOne, clickTwo, setClickTwo, whitePos, blackPos }} />
+                        }))
+                     }
                 </div>
                 {/* <button className="" onClick={()=>(handleActivity("●RESET●"))}>RESET</button> */}
-               <h2><div>{gamePlayers[1] || "No Player..."}</div></h2>
-               <h3><div>{`Welcome ${loggedName}!` || "No User..."}</div></h3>
-             
+               
+                <h2><div>{gamePlayers[1] || "No Player..."}</div></h2>
+                <h3><div>{`Welcome ${loggedName}!` || "No User..."}</div></h3>
 
                 <div className="message-container">
                     <article className="message-text">{
@@ -347,70 +245,15 @@ const passData = (data) =>{
                             ? chat.map(line => line + String.fromCharCode(15) + String.fromCharCode(10))
                             : "Game history empty"
                     }</article>
-                    <input rows="1" onChange={e => setUserComment(e.target.value)} onKeyDownCapture={e => {
-                        if (e.key == "Enter") {
-                            const pass = e.target.value
-                            e.target.value = ""
-                            handleActivity(pass)
-                            e.target.value = ""
-                        }
+                    <input rows="1" onKeyDownCapture={e => {
+                        if (e.key == "Enter"){
+                            handleActivity(e.target.value)  
+                            e.target.value=""
+                         }
                     }} placeholder="Send message here"></input>
                 </div>
-
-
-                {/* <button onClick={() => {
-                    //console.log("HI")
-                    fetch(`${url}/getboard/${selectedGame}`)
-                        .then(incoming => incoming.json())
-                        .then(data => {
-                            //console.log("OK")
-                            //console.log(data)
-                            setBlackPos([...data.blackPos])
-                            setWhitePos([...data.whitePos])
-                            setGameData({...data})
-                        })
-                }}>REFRESH</button>
-                <br />
-
-                <br /> */}
-                {/* <br />
-                <button onClick={() => {
-                    //console.log("HI")
-                    fetch(`${url}/resetboard/${selectedGame}`)
-                        .then(incoming => incoming.json())
-                        .then(response => {
-                            //console.log(response)
-                            setServer(response.message)
-                            setMoves(0)
-                        })
-                }}>RESET board</button> */}
-
             </div>
         </>
     )
 }
-
-// const wPieces = "♟♟♟♟♟♟♟♟♜♞♝♛♚♝♞♜"
-// const bPieces = "♙♙♙♙♙♙♙♙♖♘♗♕♔♗♘♖"
-
-// const placePieces = (j, i, whitePos, blackPos) => {
-//     const wPiece = whitePos.filter(el => el == String(j) + String(i))
-//     const bPiece = blackPos.filter(el => el == String(j) + String(i))
-//     const wIndex = whitePos.indexOf(wPiece[0])
-//     const bIndex = blackPos.indexOf(bPiece[0])
-
-//     if (wPiece != "") {
-//         //console.log("WHITE: ", wPiece)
-//         return wPieces[wIndex]
-//     }
-//     if (bPiece != "") {
-//         //console.log("BLACK: ", bPiece)
-//         return bPieces[bIndex]
-//     }
-
-// }
-
-
-
-
 

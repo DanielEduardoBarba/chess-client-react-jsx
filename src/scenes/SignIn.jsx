@@ -7,19 +7,20 @@ import "./SignIn.css"
 
 
 const logInWithGoogle = async (setLoggedName) =>{
+    
     const app = initializeApp(firebaseConfig)
     const auth = getAuth(app)
     const provider = new GoogleAuthProvider()
-    signInWithPopup(auth, provider)
-    .then(_user=>{
-        //setServer(`Welcome ${_user}`)
-        setLoggedName(_user.user.displayName)
 
-    })
+    signInWithPopup(auth, provider)
+        .then(_user=>{
+            setLoggedName(_user.user.displayName)
+        })
     .catch(console.error)
-        //setLoggedInUser(_user.user)
+
 }
 
+//to be repaired
 const logInWithEmail = async (setLoggedName, email, pass ) =>{
    
     console.log(email,"***********", pass)
@@ -27,9 +28,8 @@ const logInWithEmail = async (setLoggedName, email, pass ) =>{
     const auth = getAuth(app)
     signInWithEmailAndPassword(auth,email,pass)
     .then(_user=>{
-        //setServer(`Welcome ${_user}`)
+        
         console.log("***********", _user.user.email)
-
        setLoggedName(_user.user.email)
 
     })

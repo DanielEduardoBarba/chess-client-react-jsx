@@ -12,25 +12,25 @@ function App() {
   const [remoteRefresh, setRemoteRefresh] = useState(0)
   const [loggedName, setLoggedName] = useState("")
   const [selectedGame, setSelectedGame] = useState(0)
-  const [welcome,setWelcome] =useState(0)
+  const [welcome, setWelcome] = useState(0)
   const [server, setServer] = useState("")
- 
+
 
   return (
-    <ServerContext.Provider value = {{server, setServer,loggedName, setLoggedName,remoteRefresh,setRemoteRefresh, page, setPage, selectedGame, setSelectedGame}}>
+    <ServerContext.Provider value={{ server, setServer, loggedName, setLoggedName, remoteRefresh, setRemoteRefresh, page, setPage, selectedGame, setSelectedGame }}>
 
       <main >
-       <div className="body-main">{
-        !welcome
-        ?<Welcome setWelcome={setWelcome}/>
-        :!loggedName
-        ?<SignIn/>
-        : page
-            ?<ChessGame/>
-            :<Lobby/>
-      }</div>
+        <div className="body-main">{
+          !welcome
+            ? <Welcome setWelcome={setWelcome} />
+            : !loggedName
+              ? <SignIn />
+              : page
+                ? <ChessGame />
+                : <Lobby />
+        }</div>
       </main>
-  
+
     </ServerContext.Provider>
   );
 }

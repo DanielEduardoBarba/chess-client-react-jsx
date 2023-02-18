@@ -14,12 +14,12 @@ export default function Lobby() {
     const [cycle, setCycle] = useState(1)
 
     const [games, setGames] = useState([])
-    const[con,setCon] = useState("")
+    const [con, setCon] = useState("")
 
     const getLobby = () => {
         // console.log("GETTING LOBBY")
         // console.log(`${url}/getlobby`)
-       // setCon( con +"#")
+        // setCon( con +"#")
         fetch(`${url}/getlobby`)
             .then(incoming => incoming.json())
             .then(data => {
@@ -32,35 +32,35 @@ export default function Lobby() {
     }
 
     useEffect(() => {
-       
-        getLobby()
-        
 
-}, [])
+        getLobby()
+
+
+    }, [])
 
 
     return (
         <>
 
             <div className="cover-game">
-            <ChessGame viewOnly={1}/>
+                <ChessGame viewOnly={1} />
             </div>
-                    {/* <p>{con || " console"}</p> */}
-                    <div className="lobby-container">
-                        <button className="logout-btn" onClick={()=>{setLoggedName(0)}}>LOGOUT</button>
-                        <button className="refresh-btn" onClick={getLobby}>Refresh</button>
-                            <div>{games.map(lobby => (
-                                lobby.boardID
-                                ?<Match key={lobby.boardID} lobby={lobby} />
-                                :""))}</div>
-                    </div>
-                
-                
-                    {/* <button className="join-btn" onClick={() => {
+            {/* <p>{con || " console"}</p> */}
+            <div className="lobby-container">
+                <button className="logout-btn" onClick={() => { setLoggedName(0) }}>LOGOUT</button>
+                <button className="refresh-btn" onClick={getLobby}>Refresh</button>
+                <div>{games.map(lobby => (
+                    lobby.boardID
+                        ? <Match key={lobby.boardID} lobby={lobby} />
+                        : ""))}</div>
+            </div>
+
+
+            {/* <button className="join-btn" onClick={() => {
                         if()
                         setPage(selectedGame)
                          }}>JOIN GAME</button> */}
-               
+
 
         </>
     )

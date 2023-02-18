@@ -1,5 +1,3 @@
-
-
 /* .signin-container:hover{
     filter: blur(0px);
     transition: 0.5s linear;
@@ -9,7 +7,7 @@
     transition: 2s linear;
 } */
 
-.signin-container{
+.signin-container {
     background-color: lightslategray;
     display: flex;
     justify-content: center;
@@ -19,9 +17,9 @@
     width: 300px;
     border-radius: 30px;
     border: 3px solid black;
-    background: linear-gradient(311deg,#ffffff 0%, #000000 65%);
-    background: -webkit-linear-gradient(311deg,#ffffff 0%, #000000 65%);
-    background: -moz-linear-gradient(311deg,#ffffff 0%, #000000 65%);
+    background: linear-gradient(311deg, #ffffff 0%, #000000 65%);
+    background: -webkit-linear-gradient(311deg, #ffffff 0%, #000000 65%);
+    background: -moz-linear-gradient(311deg, #ffffff 0%, #000000 65%);
 
     box-shadow: 10px 10px 23px 11px #000000bf;
     -webkit-box-shadow: 10px 10px 23px 11px #000000bf;
@@ -29,8 +27,9 @@
 
     position: relative;
 }
-.email-container{
-   
+
+.email-container {
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,22 +37,23 @@
     position: relative;
 }
 
-.google-btn{
-background-image: url("../assets/google.jpg");
-background-color: white;
-height: 100px;
-width: 100%;
-justify-items: right;
-background-repeat: no-repeat;
-background-position: center;
-background-size: 175% 100%;
-width:  50px;
-height: 50px;
-position: absolute;
-translate: 100px 150px;
+.google-btn {
+    background-image: url("../assets/google.jpg");
+    background-color: white;
+    height: 100px;
+    width: 100%;
+    justify-items: right;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 175% 100%;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    translate: 100px 150px;
 
 }
-.form-inputs{
+
+.form-inputs {
     border-radius: 30px;
     border: 3px solid black;
     padding: 10px;
