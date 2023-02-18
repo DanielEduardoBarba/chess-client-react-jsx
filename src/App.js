@@ -1,9 +1,9 @@
 import { useState, createContext } from 'react'
 import ChessGame from './components/ChessGame'
 import Lobby from './components/Lobby'
-import './App.css'
 import Welcome from './scenes/Welcome'
 import SignIn from './scenes/SignIn'
+import './App.css'
 
 export const ServerContext = createContext(null)
 
